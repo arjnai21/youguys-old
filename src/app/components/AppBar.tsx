@@ -1,12 +1,34 @@
 import React from 'react'
 import SignInButton from './SignInButton'
+import Image from 'next/image'
 
 type Props = {}
 
 export default function AppBar({ }: Props) {
+    const logos = ["logo1.png", "logo2.png", "logo3.png", "logo4.png", "logo5.png"];
+    const random = Math.floor(Math.random() * logos.length);
+    const logo = logos[random];
     return (
-        <header className='flex gap-4 p-4 bg-gradient-to-b from-white to-gray-200 shadow'>
-            <SignInButton />
-        </header>
+        <div className=''>
+            <div className='flex justify-center'>
+                <Image className='p-10'
+                    src={"/logos/"+logo}
+                    width={300}
+                    height={300}
+                    alt="logo"
+                />
+            </div>
+            <div className='flex justify-center bg-gray-300 p-2'>
+                <div className='flex-auto flex justify-center'>
+                    <button className=' text-xl font-bold italic underline text-blue-500'>Write a Sketch</button>
+                </div>
+                <div className='flex-auto flex justify-center'>
+                    <button className='text-xl font-bold italic underline text-blue-500'>Vote on Submissions</button>
+                </div>
+                <div className='flex-auto flex justify-center'>
+                    <SignInButton/>
+                </div>
+            </div>
+        </div>
     )
 }
