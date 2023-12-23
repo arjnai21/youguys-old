@@ -46,13 +46,13 @@ export default function Home() {
                         <p className=' text-xl font-bold'>team!</p>
                     </div>
                     <div className='flex justify-center items-center py-2'>
-                        <button className="text-red-600 font-bold underline italic">Join Random</button>
+                        <a className="text-red-600 font-bold underline italic">Join Random</a>
                     </div>
                     <div className='flex justify-center items-center py-2'>
-                        <button className="text-red-600 font-bold underline italic">Create Team</button>
+                        <a className="text-red-600 font-bold underline italic">Create Team</a>
                     </div>
                     <div className='flex justify-center items-center py-2'>
-                        <button className="text-red-600 font-bold underline italic">Join Team</button>
+                        <a className="text-red-600 font-bold underline italic">Join Team</a>
                     </div>
                     <div className='flex justify-center items-center py-2'>
                         <input type="text" placeholder='Team Code' className='border-2 border-red-500' />
