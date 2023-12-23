@@ -14,8 +14,8 @@ const pool = new Pool({
         rejectUnauthorized: false
     }
 })
-const handler = NextAuth({
-    //@ts-ignore because the adapter thing throws a type error but its not supposed to
+export const authOptions = {
+
     adapter: PostgresAdapter(pool),
     secret: process.env.SECRET,
     providers: [
@@ -24,6 +24,8 @@ const handler = NextAuth({
             clientSecret: process.env.GOOGLE_CLIENT_SECRET ?? "",
         })
     ]
-});
+}
+//@ts-ignore because the adapter thing throws a type error but its not supposed to
+const handler = NextAuth(authOptions);
 
 export { handler as GET, handler as POST }

@@ -1,11 +1,24 @@
-"use client";
+"use client"; // TODO maybe make this a server rendered component.
 
+import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import { useSession } from 'next-auth/react';
 import SignInButton from './components/SignInButton';
 
 export default function Home() {
     const { data: session } = useSession();
+    const [team, setTeam] = useState(null);
+
+    useEffect(() => {
+        fetch('/api/teams/getTeam')
+            .then((res) => res.json())
+            .then((data) => {
+                setTeam(data);
+                console.log(data)
+            })
+    }, [])
+
+
     if (!session) {
         return (
             <main>
@@ -16,7 +29,7 @@ export default function Home() {
                             <p className=' text-xl font-bold'>YouGuys!</p>
                         </div>
                         <div className='flex justify-center items-center'>
-                            <SignInButton/>
+                            <SignInButton />
                         </div>
                     </div>
                 </div>
@@ -42,10 +55,10 @@ export default function Home() {
                         <button className="text-red-600 font-bold underline italic">Join Team</button>
                     </div>
                     <div className='flex justify-center items-center py-2'>
-                        <input type="text" placeholder='Team Code' className='border-2 border-red-500'/>
+                        <input type="text" placeholder='Team Code' className='border-2 border-red-500' />
                     </div>
                     <div className='flex justify-center items-center py-2'>
-                        <SignInButton/>
+                        <SignInButton />
                     </div>
                 </div>
             </div>
