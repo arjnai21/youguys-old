@@ -2,8 +2,8 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { NextResponse } from "next/server";
 import { Pool, types } from 'pg';
 import { getServerSession } from "next-auth/next"
-import { authOptions } from "../../auth/[...nextauth]/route"
-import { getTeam } from "../getTeam/route";
+import { authOptions } from "../../utils/authOptions";
+
 
 const pool = new Pool({
     host: process.env.PG_HOST,
@@ -30,12 +30,24 @@ function newTeamCode() {
 }
 
 async function createTeam(user1_email: string | null | undefined) {
+
     let code = newTeamCode();
+
     const result = await pool.query("INSERT INTO teams(user1_id, team_code, is_active, creation_time) VALUES((select id from users where email=$1), $2, $3, $4)", [user1_email, code, true, new Date()]);
     console.log(result);
     return code;
 
 
+}
+
+async function isOnTeam(user_email: string | null | undefined) {
+    const query_result = await pool.query("SELECT * from teams where (select id from users where email=$1) IN (user1_id, user2_id, user3_id, user4_id, user5_id) AND is_active=TRUE", [user_email]);
+    if (query_result.rows.length > 0) {
+        return true;
+    }
+    else {
+        return false;
+    }
 }
 
 
@@ -45,8 +57,8 @@ async function handler(req: Request, res: Response) {
     if (!session || !session.user) {
         return NextResponse.json({ message: "Please sign in to create a team.", success: false })
     }
-    const currentTeam = await getTeam(session.user?.email);
-    if (currentTeam.length > 0) {
+    const userOnTeam = await isOnTeam(session.user?.email);
+    if (userOnTeam) {
         return NextResponse.json({ message: "You must not be on a team to create one.", success: false })
     }
     let team_code = await createTeam(session.user?.email);

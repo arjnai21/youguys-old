@@ -1,4 +1,4 @@
-"use client"; // TODO maybe make this a server rendered component.
+"use client";
 
 import { useState, useEffect } from 'react'
 import Image from 'next/image'
