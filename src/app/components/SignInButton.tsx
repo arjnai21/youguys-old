@@ -9,17 +9,14 @@ export default function SignInButton() {
     const { data: session } = useSession();
     if (session && session.user) {
         return (
-            <div className="flex gap-4 ml-auto">
-                <p className="text-sky-600">{session.user.name}</p>
-                <button onClick={() => signOut()} className="text-red-600">
-                    Sign Out
-                </button>
+            <div className="flex-auto flex justify-center">
+                <button onClick={() => signOut()} className='text-xl font-bold italic underline text-blue-500'>Sign Out {session.user.name}</button>
             </div>
         )
     }
-    return <div className="flex gap-4 ml-auto">
-        <button onClick={() => signIn()} className="text-green-600">
-            Sign In
-        </button>
-    </div>
+    return (
+        <div className="flex-auto flex justify-center">
+            <button onClick={() => signIn()} className='text-xl font-bold italic underline text-blue-500'>Sign In</button>
+        </div>
+    )
 }
