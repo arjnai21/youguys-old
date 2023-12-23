@@ -13,14 +13,14 @@ export default function SignIn() {
                         <p className=' text-xl font-bold'>Sign In!</p>
                     </div>
                     <div className='flex justify-center items-center py-2'>
-                        <button onClick={() => {
+                        <a onClick={() => {
                             if(emailValue){
                                 signIn("email", { email:  emailValue})
                             } else {
                                 alert("No Email Provided")
                             }
                         }} 
-                        className="text-red-600 font-bold underline italic">Sign In Using Email</button>
+                        className="text-red-600 font-bold underline italic">Sign In Using Email</a>
                     </div>
                     <div className='flex justify-center items-center py-2'>
                         <input type="text" placeholder='example@email.com' className='border-2 border-red-500'
@@ -28,8 +28,8 @@ export default function SignIn() {
                     </div>
                     <div className='flex justify-center items-center'><p>or</p></div>
                     <div className='flex justify-center items-center py-2'>
-                        <button className="text-red-600 font-bold underline italic"
-                        onClick={() => signIn("google")}>Sign In Using Google</button>
+                        <a className="text-red-600 font-bold underline italic"
+                        onClick={() => signIn("google")}>Sign In Using Google</a>
                     </div>
                 </div>
             </div>
