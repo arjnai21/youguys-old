@@ -30,7 +30,8 @@ const handler = NextAuth({
         })
     ],
     pages: {
-        signIn: '/auth/signin'
+        signIn: '/auth/signin',
+        verifyRequest: '/auth/verifyRequest'
     },
     callbacks: {
         async redirect({ url, baseUrl }) {

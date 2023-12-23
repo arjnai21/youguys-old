@@ -15,7 +15,7 @@ export default function SignIn() {
                     <div className='flex justify-center items-center py-2'>
                         <a onClick={() => {
                             if(emailValue){
-                                signIn("email", { email:  emailValue})
+                                signIn("email", {email:  emailValue})
                             } else {
                                 alert("No Email Provided")
                             }
