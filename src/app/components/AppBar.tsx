@@ -20,10 +20,10 @@ export default function AppBar({ }: Props) {
             </div>
             <div className='flex justify-center bg-gray-300 p-2'>
                 <div className='flex-auto flex justify-center'>
-                    <button className=' text-xl font-bold italic underline text-blue-500'>Write a Sketch</button>
+                    <a className=' text-xl font-bold italic underline text-blue-500' href='/'>Write a Sketch</a>
                 </div>
                 <div className='flex-auto flex justify-center'>
-                    <button className='text-xl font-bold italic underline text-blue-500'>Vote on Submissions</button>
+                    <a className='text-xl font-bold italic underline text-blue-500'>Vote on Submissions</a>
                 </div>
                 <div className='flex-auto flex justify-center'>
                     <SignInButton/>

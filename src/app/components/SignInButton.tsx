@@ -10,13 +10,13 @@ export default function SignInButton() {
     if (session && session.user) {
         return (
             <div className="flex-auto flex justify-center">
-                <button onClick={() => signOut()} className='text-xl font-bold italic underline text-blue-500'>Sign Out {session.user.name}</button>
+                <a onClick={() => signOut()} className='text-xl font-bold italic underline text-blue-500'>Sign Out {session.user.name}</a>
             </div>
         )
     }
     return (
         <div className="flex-auto flex justify-center">
-            <button onClick={() => signIn()} className='text-xl font-bold italic underline text-blue-500'>Sign In</button>
+            <a onClick={() => signIn()} className='text-xl font-bold italic underline text-blue-500'>Sign In</a>
         </div>
     )
 }
