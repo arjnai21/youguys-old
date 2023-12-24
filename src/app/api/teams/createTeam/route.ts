@@ -3,6 +3,7 @@ import { NextResponse } from "next/server";
 import { Pool, types } from 'pg';
 import { getServerSession } from "next-auth/next"
 import { authOptions } from "../../utils/authOptions";
+import { emailIsOnTeam } from "../../utils/emailOnTeam";
 
 
 const pool = new Pool({
@@ -40,16 +41,6 @@ async function createTeam(user1_email: string | null | undefined) {
 
 }
 
-async function isOnTeam(user_email: string | null | undefined) {
-    const query_result = await pool.query("SELECT * from teams where (select id from users where email=$1) IN (user1_id, user2_id, user3_id, user4_id, user5_id) AND is_active=TRUE", [user_email]);
-    if (query_result.rows.length > 0) {
-        return true;
-    }
-    else {
-        return false;
-    }
-}
-
 
 async function handler(req: Request, res: Response) {
     //@ts-ignore authOptions is giving a type error even though it works
@@ -57,7 +48,7 @@ async function handler(req: Request, res: Response) {
     if (!session || !session.user) {
         return NextResponse.json({ message: "Please sign in to create a team.", success: false })
     }
-    const userOnTeam = await isOnTeam(session.user?.email);
+    const userOnTeam = await emailIsOnTeam(session.user?.email, pool);
     if (userOnTeam) {
         return NextResponse.json({ message: "You must not be on a team to create one.", success: false })
     }

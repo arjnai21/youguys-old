@@ -19,7 +19,7 @@ const pool = new Pool({
 // TODO clean up this query or change the database schema, it's running select id from teams where (select if from users WHERE email='emailaddress') a lot of times
 const getTeamQuery = "select users.name, users.email, teams.team_code from users INNER JOIN teams ON users.id=(select user1_id from teams where teams.id=(select id from teams where (select id from users WHERE email=$1) IN (user1_id, user2_id, user3_id, user4_id, user5_id) AND is_active=True)) OR users.id=(select user2_id from teams where teams.id=(select id from teams where (select id from users WHERE email=$1) IN (user1_id, user2_id, user3_id, user4_id, user5_id) AND is_active=True)) OR users.id=(select user3_id from teams where teams.id=(select id from teams where (select id from users WHERE email=$1) IN (user1_id, user2_id, user3_id, user4_id, user5_id) AND is_active=True)) OR users.id=(select user4_id from teams where teams.id=(select id from teams where (select id from users WHERE email=$1) IN (user1_id, user2_id, user3_id, user4_id, user5_id) AND is_active=True))OR users.id=(select user5_id from teams where teams.id=(select id from teams where (select id from users WHERE email=$1) IN (user1_id, user2_id, user3_id, user4_id, user5_id) AND is_active=True)) WHERE teams.id=(select id from teams where (select id from users WHERE email=$1) IN (user1_id, user2_id, user3_id, user4_id, user5_id) AND is_active=True);"
 
- async function getTeam(user1_email: string | null | undefined) {
+async function getTeam(user1_email: string | null | undefined) {
     const result = await pool.query(getTeamQuery, [user1_email]);
     return result.rows;
 
