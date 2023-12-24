@@ -22,8 +22,6 @@ const getTeamQuery = "select users.name, users.email, teams.team_code from users
 async function getTeam(user1_email: string | null | undefined) {
     const result = await pool.query(getTeamQuery, [user1_email]);
     return result.rows;
-
-
 }
 
 

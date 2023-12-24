@@ -1,10 +1,9 @@
 "use client";
 import { signIn, signOut, useSession } from 'next-auth/react';
-import React from 'react';
-import Image from 'next/image'
+import { useState } from 'react';
 
 export default function SignIn() {
-    const [emailValue, setEmail] = React.useState('')
+    const [emailValue, setEmail] = useState('')
     return (        
         <main className="">
             <div className=' py-40 flex items-center justify-center'>
