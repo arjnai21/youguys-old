@@ -34,7 +34,7 @@ export default function Home() {
             </main>
         )
     }
-    if(!!session && team.length == 0){
+    if (!!session && team.length == 0) {
         console.log(team)
         return (
             <main className="">
@@ -49,53 +49,53 @@ export default function Home() {
                         </div>
                         <div className='flex justify-center items-center py-2'>
                             <a className="text-red-600 font-bold underline italic"
-                            onClick={() => {
-                                console.log("click")
-                                fetch('/api/teams/createTeam')
-                                    .then((res) => res.json())
-                                    .then((data) => {
-                                        console.log(data)
-                                        if(data.success){
-                                            fetch('/api/teams/getTeam')
-                                                .then((res) => res.json())
-                                                .then((data) => {
-                                                    setTeam(data.team_members);
-                                                    console.log(team)
-                                                })
-                                        }else{
-                                            alert(data.message)
-                                        }
-                                    })
-                            }}>Create Team</a>
+                                onClick={() => {
+                                    console.log("click")
+                                    fetch('/api/teams/createTeam')
+                                        .then((res) => res.json())
+                                        .then((data) => {
+                                            console.log(data)
+                                            if (data.success) {
+                                                fetch('/api/teams/getTeam')
+                                                    .then((res) => res.json())
+                                                    .then((data) => {
+                                                        setTeam(data.team_members);
+                                                        console.log(team)
+                                                    })
+                                            } else {
+                                                alert(data.message)
+                                            }
+                                        })
+                                }}>Create Team</a>
                         </div>
                         <div className='flex justify-center items-center py-2'>
                             <input type="text" placeholder='Team Code' className='border-2 border-red-500'
-                            onChange={(e) => setTeamCode(e.target.value)} />
+                                onChange={(e) => setTeamCode(e.target.value)} />
                             <a className=" bg-gray-300 outline"
-                            onClick={() => {
-                                fetch('/api/teams/joinTeam', {
-                                    method: "POST",
-                                    headers: new Headers({
-                                        'Content-Type': 'application/json',
-                                    }),
-                                    body: JSON.stringify({
-                                        joinCode: teamCode
+                                onClick={() => {
+                                    fetch('/api/teams/joinTeam', {
+                                        method: "POST",
+                                        headers: new Headers({
+                                            'Content-Type': 'application/json',
+                                        }),
+                                        body: JSON.stringify({
+                                            joinCode: teamCode
+                                        })
                                     })
-                                })
-                                    .then((res) => res.json())
-                                    .then((data) => {
-                                        if(data.success){
-                                            fetch('/api/teams/getTeam')
-                                                .then((res) => res.json())
-                                                .then((data) => {
-                                                    setTeam(data.team_members);
-                                                    console.log(team)
-                                                })
-                                        }else{
-                                            alert(data.message)
-                                        }
-                                    })
-                            }}>Join Team</a>
+                                        .then((res) => res.json())
+                                        .then((data) => {
+                                            if (data.success) {
+                                                fetch('/api/teams/getTeam')
+                                                    .then((res) => res.json())
+                                                    .then((data) => {
+                                                        setTeam(data.team_members);
+                                                        console.log(team)
+                                                    })
+                                            } else {
+                                                alert(data.message)
+                                            }
+                                        })
+                                }}>Join Team</a>
                         </div>
                         <div className='flex justify-center items-center py-2'>
                             <SignInButton />

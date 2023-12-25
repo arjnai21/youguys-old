@@ -20,6 +20,10 @@ export const authOptions = {
     //@ts-ignore because the adapter thing throws a type error but its not supposed to
     adapter: PostgresAdapter(pool),
     secret: process.env.SECRET,
+    debug: true,
+    session: {
+        strategy: "database"
+    },
     providers: [
         EmailProvider({
             server: process.env.EMAIL_SERVER,
@@ -28,6 +32,7 @@ export const authOptions = {
         GoogleProvider({
             clientId: process.env.GOOGLE_CLIENT_ID ?? "",
             clientSecret: process.env.GOOGLE_CLIENT_SECRET ?? "",
+
         })
     ],
     pages: {
@@ -39,6 +44,11 @@ export const authOptions = {
         async redirect({ url, baseUrl }) {
             return '/'
         },
+        //@ts-ignore
+        async session({ session, token, user }) {
+            session.user.id = user.id;
+            return session
+        }
     }
 }
 
