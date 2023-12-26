@@ -39,25 +39,17 @@ async function isJoinableTeam(team: Team) {
 }
 
 // TODO turn this into a transaction
-async function joinTeam(team: Team, userEmail: string | null) {
+async function joinTeam(team: Team, userId: number) {
     await pool.query("UPDATE teams SET is_active=FALSE WHERE team_code=$1 AND is_active=TRUE", [team.team_code]); //set the old team to be inactive
     const query_params = [team.user1_id, team.user2_id, team.user3_id, team.user4_id, team.user5_id, team.team_code, true, team.creation_time]
-    let valuesString = "(";
-    let foundNull = false;
     // this loop ensures that we insert the new user at the first available slot in user1_id, user2_id, etc...
     for (let i = 0; i < query_params.length; i++) {
-        if (query_params[i] == null && !foundNull) {
-            valuesString += "(SELECT id from users WHERE email=$" + (i + 1) + "), ";
-            query_params[i] = userEmail;
-            foundNull = true;
+        if (query_params[i] == null) {
+            query_params[i] = userId;
+            break
         }
-        else {
-            valuesString += "$" + (i + 1) + ", "
-        }
-
     }
-    valuesString = valuesString.substring(0, valuesString.length - 2) + ")";
-    await pool.query("INSERT INTO teams(user1_id, user2_id, user3_id, user4_id, user5_id, team_code, is_active, creation_time) VALUES" + valuesString, query_params);
+    await pool.query("INSERT INTO teams(user1_id, user2_id, user3_id, user4_id, user5_id, team_code, is_active, creation_time) VALUES($1, $2, $3, $4, $5, $6, $7, $8)", query_params);
     return true;
 
 }
@@ -76,7 +68,8 @@ async function handler(req: Request, res: Response) {
     if (!joinCode) {
         return NextResponse.json({ message: "joinCode not supplied.", success: false })
     }
-    if (await emailIsOnTeam(session.user.email, pool)) { //check if they are on a team
+    //@ts-ignore
+    if (await emailIsOnTeam(session.user.id, pool)) { //check if they are on a team
         return NextResponse.json({ message: "You must not be on a team to join a team.", success: false })
     }
 
@@ -87,7 +80,8 @@ async function handler(req: Request, res: Response) {
     }
     const teamToJoin = teamToJoinArr[0];
     if (await isJoinableTeam(teamToJoin)) { // check if there is room for them on the team.
-        await joinTeam(teamToJoin, session.user.email);
+        //@ts-ignore
+        await joinTeam(teamToJoin, session.user.id);
         return NextResponse.json({ success: true, message: "Joined team" }, {
             status: 200
         })

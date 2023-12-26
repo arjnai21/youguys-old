@@ -1,6 +1,4 @@
 import NextAuth from "next-auth/next";
-
-import { Pool } from 'pg';
 import { authOptions } from "../../utils/authOptions";
 
 
