@@ -30,12 +30,11 @@ function newTeamCode() {
     return result;
 }
 
-async function createTeam(user1_email: string | null | undefined) {
+async function createTeam(user1_id: number) {
 
     let code = newTeamCode();
 
-    const result = await pool.query("INSERT INTO teams(user1_id, team_code, is_active, creation_time) VALUES((select id from users where email=$1), $2, $3, $4)", [user1_email, code, true, new Date()]);
-    console.log(result);
+    const result = await pool.query("INSERT INTO teams(user1_id, team_code, is_active, creation_time) VALUES($1, $2, $3, $4)", [user1_id, code, true, new Date()]);
     return code;
 
 
@@ -48,11 +47,13 @@ async function handler(req: Request, res: Response) {
     if (!session || !session.user) {
         return NextResponse.json({ message: "Please sign in to create a team.", success: false })
     }
-    const userOnTeam = await emailIsOnTeam(session.user?.email, pool);
+    //@ts-ignore
+    const userOnTeam = await emailIsOnTeam(session.user?.id, pool);
     if (userOnTeam) {
         return NextResponse.json({ message: "You must not be on a team to create one.", success: false })
     }
-    let team_code = await createTeam(session.user?.email);
+    //@ts-ignore
+    let team_code = await createTeam(session.user?.id);
     return NextResponse.json({ code: team_code, success: true }, {
         status: 200
     })
